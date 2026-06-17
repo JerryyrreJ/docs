@@ -1,0 +1,63 @@
+---
+title: "Environment variables reference for Sub"
+sidebarTitle: "Env Variables"
+description: "Complete reference for all Sub environment variables. The core app runs without any variables; add only the ones for services you want to enable."
+---
+
+Sub's core runs without any environment variables — you only need to set variables for optional services like cloud sync, payments, or notifications. Start with no variables configured, verify local-first mode works, then add variables incrementally as you enable each service.
+
+## Core App
+
+No variables required. All subscription tracking, analytics, currency conversion, import/export, and UI features work out of the box with no configuration. Data is stored in the browser until you connect Supabase.
+
+## Supabase (Cloud Sync, Auth, Notifications)
+
+Set these variables to enable user authentication, multi-device sync, Bark notification scheduling, the Developer API, and premium status activation.
+
+<Warning>
+  `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` are browser-visible by design — the anon key is safe to expose. `SUPABASE_SECRET_KEY` is your service role key and must never appear in a `VITE_`-prefixed variable or be committed to your repository.
+</Warning>
+
+| Variable | Scope | Purpose |
+|---|---|---|
+| `VITE_SUPABASE_URL` | Browser | Supabase project URL |
+| `VITE_SUPABASE_ANON_KEY` | Browser | Supabase anonymous key |
+| `SUPABASE_URL` | Server | Supabase URL for Functions |
+| `SUPABASE_PUBLISHABLE_KEY` | Server | Access-token verification |
+| `SUPABASE_SECRET_KEY` | Server | Notifications and premium activation |
+| `SUPABASE_SERVICE_ROLE_KEY` | Server | Legacy alias for `SUPABASE_SECRET_KEY` |
+
+## Stripe (Payments)
+
+Set these variables to enable the payment UI and Stripe Checkout flow. `STRIPE_PRICE_ID` locks the server to a single accepted price — users cannot substitute a different price from the browser.
+
+| Variable | Scope | Purpose |
+|---|---|---|
+| `VITE_STRIPE_PUBLISHABLE_KEY` | Browser | Enables payment UI |
+| `STRIPE_SECRET_KEY` | Server | Checkout session creation |
+| `STRIPE_WEBHOOK_SECRET` | Server | Webhook signature verification |
+| `STRIPE_PRICE_ID` | Server | The only accepted Stripe Price |
+| `SITE_URL` | Server | Success/cancellation redirect URL |
+
+## Developer API (Quota Overrides)
+
+These variables let you raise or lower the default request and key limits for your instance. All values are optional — omit any variable to keep its default.
+
+| Variable | Default | Purpose |
+|---|---|---|
+| `API_FREE_RATE_LIMIT_PER_HOUR` | `60` | Free user requests per hour |
+| `API_PREMIUM_RATE_LIMIT_PER_HOUR` | `1000` | Premium user requests per hour |
+| `API_FREE_ACTIVE_KEYS` | `1` | Free user max active API keys |
+| `API_PREMIUM_ACTIVE_KEYS` | `5` | Premium user max active API keys |
+| `API_FAILED_AUTH_RATE_LIMIT_PER_HOUR` | `300` | Failed auth attempts per hour |
+| `API_RATE_LIMIT_RETENTION_HOURS` | `48` | Rate limit window retention in hours |
+
+## Security Rules
+
+<Warning>
+  `VITE_`-prefixed variables are bundled into the browser JavaScript and are visible to anyone who inspects your site. Never put secrets — service role keys, Stripe secret keys, or webhook secrets — into any `VITE_`-prefixed variable.
+</Warning>
+
+<Tip>
+  Bark notification settings (server URL, device key, and days-before reminders) are configured per-user inside the app UI. There are no environment variables for Bark.
+</Tip>

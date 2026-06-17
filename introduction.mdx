@@ -1,0 +1,56 @@
+---
+title: Sub – Track and manage your recurring subscriptions
+sidebarTitle: Introduction
+description: Sub is a local-first subscription tracker with multi-currency support, analytics, renewal reminders, and a developer API. No account required.
+---
+
+Sub is a local-first web app that puts you in control of every recurring charge you pay — streaming services, SaaS tools, gym memberships, and anything else that bills on a schedule. Open the app, add a subscription, and instantly see what you spend each month and each year, all converted to a single base currency you choose. Because Sub stores everything in your browser by default, there is nothing to sign up for, no password to create, and no data sent anywhere you did not ask for.
+
+## What Sub Does
+
+Sub solves the problem of subscription sprawl: costs scattered across dozens of billing emails, multiple currencies, and irregular renewal dates that are easy to lose track of. With Sub you see every subscription in one place, understand your true spending in your own currency, and get reminded before a renewal hits your card.
+
+### Key capabilities
+
+- **Local-first storage** — all data lives in your browser; no account or internet connection required to use the core app
+- **Multi-currency support** — track subscriptions in CNY, USD, EUR, JPY, GBP, AUD, CAD, CHF, HKD, or SGD and convert everything to a single base currency using live exchange rates
+- **Monthly and yearly totals** — switch views to see what you pay per month or per year across your entire portfolio
+- **Analytics** — category breakdowns, top subscriptions by cost, renewal-pattern charts, and spending reports
+- **Cloud sync (optional)** — sign in with a Supabase-backed account to sync your subscriptions across all your devices
+- **Bark push reminders (optional)** — receive a push notification to your iPhone before a renewal date arrives
+- **Developer API (optional)** — automate subscription CRUD operations with personal API keys
+
+## Local-First vs. Cloud Mode
+
+Sub is designed around a local-first principle: the app works completely offline and without an account.
+
+| Mode | How it works |
+|---|---|
+| **Without an account** | Subscriptions, categories, preferences, and import/export data are stored in your browser. Everything works offline. |
+| **With an account** | Your data syncs to Supabase cloud storage. Changes appear on every signed-in device automatically. Bark reminders and the Developer API become available. |
+
+You can start local and sign in later. When you sign in for the first time, Sub offers to upload your existing local subscriptions to the cloud so you do not lose anything.
+
+<Note>
+  The live app is available at [https://sub.jerrylu.app](https://sub.jerrylu.app). No installation required — open it in any modern browser and start adding subscriptions immediately.
+</Note>
+
+## Explore the Docs
+
+<CardGroup cols={2}>
+  <Card title="Quickstart" icon="rocket" href="/quickstart">
+    Add your first subscription and read your spending totals in under five minutes.
+  </Card>
+  <Card title="Subscriptions" icon="list" href="/features/subscriptions">
+    Learn how to add, edit, sort, filter, and organise your subscriptions.
+  </Card>
+  <Card title="Analytics" icon="chart-bar" href="/features/analytics">
+    Understand category breakdowns, top costs, and upcoming renewal patterns.
+  </Card>
+  <Card title="Notifications" icon="bell" href="/notifications/overview">
+    Set up Bark push reminders so renewals never catch you off guard.
+  </Card>
+  <Card title="Developer API" icon="code" href="/api/overview">
+    Automate subscription management with personal API keys and a simple HTTP API.
+  </Card>
+</CardGroup>

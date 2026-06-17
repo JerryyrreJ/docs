@@ -1,0 +1,87 @@
+---
+title: "How Sub renewal reminders keep you ahead of charges"
+sidebarTitle: "Overview"
+description: "Sub sends Bark push notifications before your subscriptions renew. Reminders fire even when the app is closed, thanks to server-side scheduling."
+---
+
+Sub can send you a Bark push notification N days before any subscription renews, so you're never caught off guard by an unexpected charge. Because reminders are driven by a server-side scheduled function rather than browser polling, they fire reliably around the clock — whether Sub is open or not.
+
+## How It Works
+
+When notifications are configured, Sub runs a scheduled server-side function that checks every subscription with notifications enabled, calculates how many days remain until the next payment date, and fires a Bark push to your device at the right moment. No browser tab needs to stay open.
+
+<Steps>
+  <Step title="Scheduled function runs">
+    A server-side function checks all subscriptions that have notifications enabled and whose renewal date matches the configured days-before window.
+  </Step>
+  <Step title="Bark push is sent">
+    The function sends a Bark push notification directly to your iOS device using your server URL and device key.
+  </Step>
+  <Step title="Delivery is recorded">
+    The function records each delivery to prevent duplicate reminders for the same renewal cycle.
+  </Step>
+</Steps>
+
+<Note>
+  Reminders work 24/7 even when Sub is closed — no browser polling required.
+</Note>
+
+## Requirements
+
+Before you can receive renewal reminders, make sure you have the following in place.
+
+<CardGroup cols={3}>
+  <Card title="Sub Account" icon="user">
+    A Sub account with cloud sync enabled. Notification settings are stored in the cloud, so a signed-in account is required.
+  </Card>
+  <Card title="Bark App" icon="bell">
+    The [Bark app](https://bark.day.app) installed on your iOS device. Bark is a free, open-source push notification client for iPhone and iPad.
+  </Card>
+  <Card title="Bark Server" icon="server">
+    Access to a Bark server — either the official server at `https://api.day.app` or your own self-hosted instance.
+  </Card>
+</CardGroup>
+
+## Two-Level Notification Control
+
+Sub uses two independent toggles to decide whether a reminder fires. **Both must be on** for a notification to be sent.
+
+### 1. Global Setting
+
+Enable Bark notifications for your entire account from the Notification Settings screen. Navigate there by opening the user menu and selecting **Notification Settings**. On this screen you configure:
+
+- **Server URL** — the Bark server that will deliver your pushes
+- **Device key** — your unique Bark device identifier
+- **Days before renewal** — how far in advance Sub should notify you
+
+### 2. Per-Subscription Toggle
+
+Each individual subscription also has its own notification toggle. Open any subscription, find the **Notification enabled** toggle, and switch it on. A reminder fires only when the global Bark setting is enabled **and** the per-subscription toggle is on.
+
+<Tip>
+  Use the per-subscription toggle to silence reminders for subscriptions you track passively — such as annual plans you've already budgeted for — while keeping alerts active for everything else.
+</Tip>
+
+## ReminderSettings Reference
+
+The following fields make up the `ReminderSettings` structure that controls notification behavior.
+
+| Field | Type | Description |
+|---|---|---|
+| `barkPush.enabled` | `boolean` | Global on/off switch for all Bark reminders |
+| `barkPush.serverUrl` | `string` | URL of the Bark server (official or self-hosted) |
+| `barkPush.deviceKey` | `string` | Your Bark device key, shown inside the Bark app |
+| `barkPush.daysBefore` | `number` | How many days before renewal to send the reminder |
+
+## Supported Bark Servers
+
+Sub works with both the official Bark server and self-hosted Docker instances.
+
+| Option | URL | Notes |
+|---|---|---|
+| Official server | `https://api.day.app` | Free, maintained by the Bark team |
+| Self-hosted | Your own URL | Full control; Docker image available from the Bark project |
+
+## Next Steps
+
+Ready to configure Bark in Sub? Follow the step-by-step instructions in the [Bark Setup guide](/notifications/bark-setup).

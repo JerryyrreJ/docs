@@ -1,0 +1,52 @@
+---
+title: "Upgrade to Sub Premium via Stripe Checkout"
+sidebarTitle: "Upgrade"
+description: "Purchase Sub Premium with a one-time Stripe payment to unlock 5 API keys and 1,000 requests per hour for your account."
+---
+
+Upgrading to Premium is a one-time purchase processed securely by Stripe. Once the payment is confirmed, Sub activates Premium on your account automatically — no manual steps required on your end.
+
+## How to Upgrade
+
+<Steps>
+  <Step title="Sign in to Sub">
+    An account is required to purchase Premium. Sign in before starting the checkout flow so that the payment can be linked to your account.
+  </Step>
+  <Step title="Open the user menu and select Upgrade to Premium">
+    Click your avatar or user menu in the top-right corner of the app, then choose **Upgrade to Premium**.
+  </Step>
+  <Step title="Complete the Stripe Checkout flow">
+    Sub redirects you to a hosted Stripe Checkout page. Enter your payment details and confirm the purchase.
+  </Step>
+  <Step title="Return to Sub">
+    After a successful payment, Stripe notifies Sub automatically. Your account is upgraded before you land back on the app.
+  </Step>
+</Steps>
+
+## What Happens After Payment
+
+Once Stripe confirms the payment, Sub applies the following changes to your account immediately:
+
+| Change | Free | Premium |
+|---|---|---|
+| Active API keys allowed | 1 | 5 |
+| API requests per hour | 60 | 1,000 |
+
+<Tip>
+  Premium activation is instant after Stripe confirms the payment. If you do not see the upgrade reflected in your account after a few minutes, sign out and sign back in to refresh your session.
+</Tip>
+
+## Frequently Asked Questions
+
+<AccordionGroup>
+  <Accordion title="What if I lose access to my account?">
+    Contact support — your payment is linked to the account email you used at Stripe Checkout. Provide that email address when you reach out so the team can locate your purchase and restore access.
+  </Accordion>
+  <Accordion title="Is Premium a subscription or a one-time purchase?">
+    Premium is a one-time purchase. There are no recurring charges. You pay once and retain Premium access on that account indefinitely.
+  </Accordion>
+</AccordionGroup>
+
+<Note>
+  Running Sub on your own infrastructure? See [Self-Hosting Configuration](/configuration/self-hosting) for details on enabling payments for your deployment.
+</Note>

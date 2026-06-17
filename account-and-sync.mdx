@@ -1,0 +1,79 @@
+---
+title: Sign in to Sub and sync subscriptions across devices
+sidebarTitle: Account & Sync
+description: Create an account to sync your Sub subscriptions across all your devices, unlock cloud-backed renewal reminders, and access the Developer API.
+---
+
+Sub works entirely without an account — your subscriptions, categories, and preferences live in your browser and everything works offline. Signing in adds a cloud layer on top of that local foundation: your data syncs across every device you use, Bark push reminders become available, and you can generate Developer API keys for automation. This page explains what signing in enables, how the sign-in flow works, and what happens to your existing local data when you first connect to the cloud.
+
+## What Cloud Sync Adds
+
+Without an account, Sub is fully functional but limited to a single browser. Signing in unlocks the following:
+
+<CardGroup cols={2}>
+  <Card title="Multi-device sync" icon="arrows-rotate">
+    Subscription data syncs automatically across all signed-in devices. Add a subscription on your laptop and it appears on your phone within seconds.
+  </Card>
+  <Card title="Cloud-backed notifications" icon="bell">
+    Bark reminder preferences and notification history are stored in the cloud, so your reminder settings follow you across devices and survive browser data clears.
+  </Card>
+  <Card title="Developer API access" icon="code">
+    Generate personal API keys to create, read, update, and delete subscriptions programmatically via HTTP. An account is required to use the Developer API.
+  </Card>
+  <Card title="Premium tier" icon="star">
+    Upgrade to a paid premium account to unlock higher API rate quotas and additional cloud features as they become available.
+  </Card>
+</CardGroup>
+
+## How to Sign In
+
+<Steps>
+  <Step title="Open the user menu">
+    Click the user or account icon in the top corner of the Sub dashboard to open the user menu.
+  </Step>
+  <Step title="Click Sign in">
+    Select **Sign in** from the menu. Sub supports email-based authentication. Follow the on-screen prompts to create a new account or sign in to an existing one.
+  </Step>
+  <Step title="Upload your local data (first sign-in only)">
+    If you already have subscriptions stored locally, Sub detects them and prompts you to upload them to the cloud. Confirm the upload to merge your local subscriptions into your new cloud account. Sub reports which subscriptions uploaded successfully and flags any that failed so you can retry.
+  </Step>
+  <Step title="Confirm sync is active">
+    After signing in, the dashboard indicates that cloud sync is enabled. Any change you make — adding, editing, or deleting a subscription — is synced to Supabase automatically.
+  </Step>
+</Steps>
+
+## Local-First Behaviour Without an Account
+
+<Accordion title="What works without signing in?">
+  Everything in the core app works without an account:
+
+  - Tracking subscriptions with name, category, amount, currency, billing period, and renewal dates
+  - Monthly and yearly spending totals with live currency conversion
+  - Sorting and filtering by name, amount, renewal date, category, or creation date
+  - Custom and built-in categories
+  - Import and export of subscription data as JSON
+  - Analytics: category breakdowns, top subscriptions, and renewal patterns
+  - Light and dark mode on desktop and mobile
+
+  All data is stored in your browser using local storage. No data is sent to any server while you are in local-only mode.
+</Accordion>
+
+## Multi-Device Sync After Sign-In
+
+Once you are signed in, Sub keeps your subscriptions in sync across every device automatically. Changes travel through Supabase in real time — there is no manual refresh or export-and-import step required. If a sync operation fails temporarily (for example, because of a network interruption), Sub queues the change locally and retries it when connectivity is restored.
+
+<Warning>
+  Each browser profile maintains its own local data store. If you use Sub in a private or incognito window without signing in, those subscriptions are isolated from your main browser profile and will not sync.
+</Warning>
+
+## Signing Out
+
+Signing out returns Sub to local-only mode. Your local browser data is not deleted when you sign out — any subscriptions that were stored locally before you signed in remain in the browser. Cloud data stays safe in your Supabase account and will be accessible the next time you sign in on any device.
+
+<Note>
+  After signing out, new subscriptions you add are stored locally again. They will not sync to the cloud until you sign back in, at which point Sub will offer to upload any new local subscriptions.
+</Note>
+
+<Tip>
+  After signing in, set up Bark push reminders to get notified before a renewal date arrives. See [Notifications overview](/notifications/overview) for step-by-step instructions on connecting your Bark server and choosing how many days in advance you want to be reminded.
+</Tip>

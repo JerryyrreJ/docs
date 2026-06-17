@@ -1,0 +1,94 @@
+---
+title: "Connect Sub to Supabase for cloud sync"
+sidebarTitle: "Supabase"
+description: "Set up Supabase to enable authentication, multi-device sync, cloud notifications, and the Developer API in your Sub instance."
+---
+
+Supabase is Sub's optional backend for authentication, subscription cloud sync, notification settings, and API key storage. Without it, Sub works entirely in the browser — adding Supabase lets you sign in, access your data across devices, and use server-side Bark reminders.
+
+## What Supabase Enables
+
+<CardGroup cols={2}>
+  <Card title="User Accounts" icon="user">
+    Sign-up, sign-in, and session management backed by Supabase Auth.
+  </Card>
+  <Card title="Multi-Device Sync" icon="arrows-rotate">
+    Subscription data synced across every device you sign in to.
+  </Card>
+  <Card title="Cloud Notifications" icon="bell">
+    Bark reminder settings and delivery history stored server-side, enabling scheduled hourly checks.
+  </Card>
+  <Card title="Developer API" icon="code">
+    API key creation, storage, rate limiting, and subscription CRUD via the public REST API.
+  </Card>
+  <Card title="Premium Activation" icon="star">
+    Premium status recorded in your profile after a successful Stripe payment.
+  </Card>
+</CardGroup>
+
+## Connect Your Supabase Project
+
+<Steps>
+  <Step title="Create a Supabase project">
+    Go to [supabase.com](https://supabase.com), create a new project, and note your project's region. The free tier is sufficient for personal use.
+  </Step>
+  <Step title="Copy your project URL and anon key">
+    Open **Project Settings → API** in the Supabase dashboard. Copy the **Project URL** and the **anon / public** key. These are safe to expose in the browser.
+  </Step>
+  <Step title="Set your browser variables">
+    Add the following to your deployment environment (Netlify environment variables, `.env` local file, etc.):
+
+    ```bash
+    VITE_SUPABASE_URL=https://your-project-ref.supabase.co
+    VITE_SUPABASE_ANON_KEY=your-anon-key
+    ```
+  </Step>
+  <Step title="Set your server-only variables">
+    Copy the **service_role** key from **Project Settings → API**. Store it as a server-only variable — never in a `VITE_`-prefixed name:
+
+    ```bash
+    SUPABASE_URL=https://your-project-ref.supabase.co
+    SUPABASE_PUBLISHABLE_KEY=your-anon-key
+    SUPABASE_SECRET_KEY=your-service-role-key
+    ```
+
+    Netlify Functions read these at runtime and the key never reaches the browser bundle.
+  </Step>
+  <Step title="Run the database migrations">
+    Apply Sub's schema to your project before enabling sync or notifications. See the [Database Migrations](#database-migrations) section below for the full workflow.
+  </Step>
+</Steps>
+
+## Database Migrations
+
+Sub manages its schema through versioned migration files included in the repository. Apply them before enabling cloud sync or scheduled notifications.
+
+<Accordion title="Applying migrations">
+  For a **new** Supabase project, run `supabase start` then `npm run db:verify` to apply and verify the full schema locally. Push to your hosted project with the Supabase CLI.
+
+  For an **existing** production project, create a read-only DDL dump first to confirm the baseline diff, then apply the included migrations in order. See `supabase/README.md` in the repository for the complete step-by-step workflow.
+</Accordion>
+
+## Data Stored in Supabase
+
+Every table is owned by the authenticated user. The schema covers:
+
+| Area | What Is Stored |
+|---|---|
+| User profiles | Account metadata and premium flag |
+| Subscriptions | Recurring payment records |
+| Custom categories | User-defined category names and icons |
+| Notification settings | Bark server URL, device key, days-before preference |
+| Delivery locks | Per-subscription locks that prevent duplicate reminders |
+
+## Security
+
+<Warning>
+  Keep the **service role key** (`SUPABASE_SECRET_KEY`) out of any browser-exposed variable. It bypasses Row Level Security and can read or modify every row in your database.
+</Warning>
+
+Sub enables Row Level Security (RLS) on all user-owned tables so that each authenticated user can only read and write their own rows. Do not disable RLS policies after running the migrations.
+
+<Note>
+  Without Supabase configured, all subscription data remains in the browser's local storage. Cloud sync, scheduled notifications, the Developer API, and premium activation are unavailable in local-only mode.
+</Note>

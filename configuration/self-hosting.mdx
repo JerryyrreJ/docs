@@ -1,0 +1,99 @@
+---
+title: "Self-host Sub on Netlify or your own server"
+sidebarTitle: "Self-Hosting"
+description: "Deploy your own Sub instance on Netlify with full control over data, API quotas, premium activation, and notification scheduling."
+---
+
+Sub is designed to run on Netlify — a Vite static frontend paired with Netlify Functions for the server-side features — but you can adapt it for any static hosting provider that can serve a `dist/` folder. Self-hosting gives you full control over your data, API quotas, and which optional services you enable.
+
+## What You Need
+
+<CardGroup cols={3}>
+  <Card title="Netlify Account" icon="cloud">
+    Free tier is sufficient for small teams. Create one at [netlify.com](https://netlify.com).
+  </Card>
+  <Card title="Node.js 22.12+" icon="node-js">
+    Required to build the app and run the Netlify CLI locally.
+  </Card>
+  <Card title="Optional Services" icon="plug">
+    Supabase project, Stripe account, and Bark app — only needed for the features you want.
+  </Card>
+</CardGroup>
+
+## Deploy to Netlify
+
+<Steps>
+  <Step title="Fork the repository">
+    Fork the Sub repository to your own GitHub account:
+    [github.com/JerryyrreJ/subscription-management](https://github.com/JerryyrreJ/subscription-management)
+  </Step>
+  <Step title="Connect your fork to Netlify">
+    In the Netlify dashboard, choose **Add new site → Import an existing project** and select your forked repository.
+  </Step>
+  <Step title="Configure build settings">
+    Set the following in Netlify's build settings (these match `netlify.toml` and should be detected automatically):
+
+    | Setting | Value |
+    |---|---|
+    | Build command | `npm run build` |
+    | Publish directory | `dist` |
+    | Functions directory | `netlify/functions` |
+  </Step>
+  <Step title="Set environment variables">
+    Add only the variables for the services you want to enable. See the [Environment Variables reference](/configuration/environment-variables) for the full list. At minimum, set `SITE_URL` to your Netlify site URL if you plan to use Stripe.
+  </Step>
+  <Step title="Deploy">
+    Trigger a deploy. Netlify builds the Vite frontend and deploys the Functions in one step. Verify local-first mode works before enabling optional services.
+  </Step>
+</Steps>
+
+## Local Development
+
+Clone and run the frontend on its own with no additional tooling:
+
+<CodeGroup>
+  ```bash Start frontend only
+  git clone https://github.com/JerryyrreJ/subscription-management.git
+  cd subscription-management
+  npm install
+  npm run dev
+  ```
+
+  ```bash Start with Netlify Functions
+  npm run dev:full
+  ```
+</CodeGroup>
+
+`npm run dev` starts the Vite development server at `http://localhost:5173`. All core features — subscription tracking, analytics, import/export — work immediately with no variables set.
+
+`npm run dev:full` starts the Netlify Dev server at `http://localhost:8888` and loads your local Netlify Functions. Use this whenever you need to test Stripe checkout, webhook handling, or scheduled notifications. The Netlify CLI must be installed before running this command.
+
+## Netlify Functions Reference
+
+Sub ships the following serverless functions. They are deployed automatically alongside the frontend and require no extra configuration beyond environment variables.
+
+| Function | Purpose |
+|---|---|
+| `api-v1-subscriptions` | Public subscription REST API |
+| `api-keys` | Developer API key management |
+| `create-checkout-session` | Stripe Checkout session creation |
+| `stripe-webhook` | Payment confirmation and premium activation |
+| `send-scheduled-notifications` | Bark renewal reminders (runs on a scheduled hourly trigger) |
+
+<Tip>
+  All core app features — tracking, analytics, currency conversion, import/export — work without any Netlify Functions. Functions are only needed for the Developer API, Stripe payments, and server-side Bark notification scheduling.
+</Tip>
+
+## Deployment Checklist
+
+<Accordion title="Before going live">
+  - Add environment variables only for the services you plan to enable.
+  - Run Supabase SQL migrations before turning on cloud sync or scheduled notifications.
+  - Configure your Stripe webhook endpoint to point at `https://your-site.netlify.app/.netlify/functions/stripe-webhook` and subscribe it to `checkout.session.completed`.
+  - Set `SITE_URL` to your production Netlify URL so Stripe redirects land correctly.
+  - Verify local-first behavior by loading the app with no optional variables.
+</Accordion>
+
+<Warning>
+  Never commit `.env` files, service role keys, Stripe secret keys, or webhook secrets to your repository. Store all secrets exclusively in Netlify environment variables (or your chosen hosting provider's secret store).
+</Warning>

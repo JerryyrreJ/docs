@@ -1,0 +1,158 @@
+---
+title: "Create a New Subscription – Sub REST API Reference"
+sidebarTitle: "Create"
+description: "POST /api/v1/subscriptions — create a new subscription. Send name, amount, currency, period, and lastPaymentDate in the JSON body."
+---
+
+The Create endpoint adds a new subscription to your account. Sub calculates `nextPaymentDate` automatically from `lastPaymentDate` and `period`, so you never need to supply it yourself. Send the request body as JSON with `Content-Type: application/json`, and the server returns the complete subscription object — including all server-assigned fields — with a `201 Created` status.
+
+## Endpoint
+
+```
+POST /api/v1/subscriptions
+```
+
+## Request body
+
+<ParamField body="name" type="string" required>
+  Name of the service you are tracking, for example `Netflix`. This appears throughout the Sub UI.
+</ParamField>
+
+<ParamField body="category" type="string" required>
+  Category label for the subscription, for example `Streaming` or `Productivity`.
+</ParamField>
+
+<ParamField body="amount" type="number" required>
+  Cost per billing period as a decimal number, for example `15.99`.
+</ParamField>
+
+<ParamField body="currency" type="string" required>
+  ISO 4217 currency code for the amount. Must be one of: `CNY`, `USD`, `EUR`, `JPY`, `GBP`, `AUD`, `CAD`, `CHF`, `HKD`, `SGD`.
+</ParamField>
+
+<ParamField body="period" type="string" required>
+  Billing frequency. Must be one of: `monthly`, `yearly`, `custom`. Use `custom` together with `customDate` for non-standard intervals.
+</ParamField>
+
+<ParamField body="lastPaymentDate" type="string" required>
+  Date of the most recent payment in `YYYY-MM-DD` format, for example `2026-06-01`. Sub uses this together with `period` to calculate `nextPaymentDate`.
+</ParamField>
+
+<ParamField body="customDate" type="string">
+  Custom billing interval. Only used when `period` is `custom`. Must be a positive whole number expressed as a string (for example `"45"` for a 45-day cycle). Omit this field for `monthly` and `yearly` subscriptions.
+</ParamField>
+
+<ParamField body="notificationEnabled" type="boolean" default="true">
+  Set to `false` to disable payment-reminder notifications for this subscription. Defaults to `true` if omitted.
+</ParamField>
+
+## Request example
+
+```bash
+curl -X POST \
+  -H "Authorization: Bearer subm_YOUR_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"name":"Netflix","category":"Streaming","amount":15.99,"currency":"USD","period":"monthly","lastPaymentDate":"2026-06-01"}' \
+  https://sub.jerrylu.app/api/v1/subscriptions
+```
+
+## Response
+
+Returns `201 Created` with an envelope containing the newly created subscription object under `data`. All server-assigned fields (`id`, `nextPaymentDate`, `createdAt`, `updatedAt`) are populated and ready to use.
+
+<ResponseField name="data" type="object" required>
+  The complete subscription object as stored by Sub.
+
+  <Expandable title="Subscription object fields">
+    <ResponseField name="id" type="string" required>
+      Server-assigned UUID for the new subscription.
+    </ResponseField>
+
+    <ResponseField name="name" type="string" required>
+      Service name as provided in the request.
+    </ResponseField>
+
+    <ResponseField name="category" type="string" required>
+      Category label as provided in the request.
+    </ResponseField>
+
+    <ResponseField name="amount" type="number" required>
+      Cost per billing period as provided in the request.
+    </ResponseField>
+
+    <ResponseField name="currency" type="string" required>
+      ISO 4217 currency code as provided in the request.
+    </ResponseField>
+
+    <ResponseField name="period" type="string" required>
+      Billing frequency as provided in the request.
+    </ResponseField>
+
+    <ResponseField name="lastPaymentDate" type="string" required>
+      Most recent payment date in `YYYY-MM-DD` format as provided in the request.
+    </ResponseField>
+
+    <ResponseField name="nextPaymentDate" type="string" required>
+      Server-calculated next payment date in `YYYY-MM-DD` format, derived from `lastPaymentDate` and `period`.
+    </ResponseField>
+
+    <ResponseField name="customDate" type="string">
+      Custom billing interval as provided in the request. Only present in the response when `period` is `custom`; omitted otherwise.
+    </ResponseField>
+
+    <ResponseField name="notificationEnabled" type="boolean" required>
+      Whether payment-reminder notifications are enabled. Reflects the value you sent, or `true` if omitted.
+    </ResponseField>
+
+    <ResponseField name="createdAt" type="string" required>
+      ISO 8601 timestamp of when the subscription was created.
+    </ResponseField>
+
+    <ResponseField name="updatedAt" type="string" required>
+      ISO 8601 timestamp of the most recent update. Equal to `createdAt` for a newly created subscription.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="requestId" type="string" required>
+  Unique identifier for this API request. Include this value when contacting support.
+</ResponseField>
+
+### Example response
+
+```json
+{
+  "data": {
+    "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "name": "Netflix",
+    "category": "Streaming",
+    "amount": 15.99,
+    "currency": "USD",
+    "period": "monthly",
+    "lastPaymentDate": "2026-06-01",
+    "nextPaymentDate": "2026-07-01",
+    "notificationEnabled": true,
+    "createdAt": "2026-06-01T12:00:00.000Z",
+    "updatedAt": "2026-06-01T12:00:00.000Z"
+  },
+  "requestId": "f8e7d6c5-b4a3-..."
+}
+```
+
+## Errors
+
+| HTTP status | Error code | Description |
+|---|---|---|
+| `400` | `invalid_json` | The request body is not valid JSON or is not a JSON object. |
+| `400` | `invalid_subscription` | One or more fields failed validation (missing required field, unsupported currency, etc.). |
+| `400` | `invalid_subscription_field` | The body contains a field that is not writable (for example `id` or `nextPaymentDate`). |
+
+## Rate limit headers
+
+Every response includes the following headers so you can track your usage.
+
+| Header | Description |
+|---|---|
+| `X-RateLimit-Limit` | Maximum requests allowed in the current window. |
+| `X-RateLimit-Remaining` | Requests remaining before you are rate-limited. |
+| `X-RateLimit-Reset` | Unix timestamp when the current window resets. |

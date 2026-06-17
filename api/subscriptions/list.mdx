@@ -1,0 +1,115 @@
+---
+title: "Retrieve All Subscriptions – Sub REST API Reference"
+sidebarTitle: "List"
+description: "GET /api/v1/subscriptions — retrieve all subscriptions for the authenticated API key owner. Returns an array of subscription objects."
+---
+
+The List endpoint returns every subscription belonging to the account associated with your API key. Results are ordered by creation date, newest first. Each item in the array is a full subscription object, so you receive all fields — including server-calculated values like `nextPaymentDate` — in a single request.
+
+## Endpoint
+
+```
+GET /api/v1/subscriptions
+```
+
+## Request example
+
+```bash
+curl -H "Authorization: Bearer subm_YOUR_KEY" \
+  https://sub.jerrylu.app/api/v1/subscriptions
+```
+
+## Response
+
+Returns `200 OK` with an envelope containing a `data` array of subscription objects and a `requestId` string for support tracing.
+
+<ResponseField name="data" type="array" required>
+  Array of subscription objects belonging to your account.
+
+  <Expandable title="Subscription object fields">
+    <ResponseField name="id" type="string" required>
+      Unique UUID assigned by the server when the subscription was created.
+    </ResponseField>
+
+    <ResponseField name="name" type="string" required>
+      Human-readable service name, for example `Netflix`.
+    </ResponseField>
+
+    <ResponseField name="category" type="string" required>
+      Category label you assigned to this subscription, for example `Streaming`.
+    </ResponseField>
+
+    <ResponseField name="amount" type="number" required>
+      Cost per billing period expressed as a decimal number, for example `15.99`.
+    </ResponseField>
+
+    <ResponseField name="currency" type="string" required>
+      ISO 4217 currency code. One of: `CNY`, `USD`, `EUR`, `JPY`, `GBP`, `AUD`, `CAD`, `CHF`, `HKD`, `SGD`.
+    </ResponseField>
+
+    <ResponseField name="period" type="string" required>
+      Billing frequency. One of: `monthly`, `yearly`, `custom`.
+    </ResponseField>
+
+    <ResponseField name="lastPaymentDate" type="string" required>
+      Date of the most recent payment in `YYYY-MM-DD` format.
+    </ResponseField>
+
+    <ResponseField name="nextPaymentDate" type="string" required>
+      Server-calculated date of the next payment in `YYYY-MM-DD` format. Derived from `lastPaymentDate`, `period`, and `customDate`.
+    </ResponseField>
+
+    <ResponseField name="customDate" type="string">
+      Custom billing interval used when `period` is `custom`. The number of days between payments, expressed as a string integer (for example `"45"`). Omitted from the response when `period` is `monthly` or `yearly`.
+    </ResponseField>
+
+    <ResponseField name="notificationEnabled" type="boolean" required>
+      Whether payment-reminder notifications are enabled for this subscription. Defaults to `true`.
+    </ResponseField>
+
+    <ResponseField name="createdAt" type="string" required>
+      ISO 8601 timestamp of when the subscription was created, for example `2026-01-15T10:00:00.000Z`.
+    </ResponseField>
+
+    <ResponseField name="updatedAt" type="string" required>
+      ISO 8601 timestamp of the most recent update, for example `2026-06-01T00:00:00.000Z`.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="requestId" type="string" required>
+  Unique identifier for this API request. Include this value when contacting support.
+</ResponseField>
+
+### Example response
+
+```json
+{
+  "data": [
+    {
+      "id": "a1b2c3d4-...",
+      "name": "Netflix",
+      "category": "Streaming",
+      "amount": 15.99,
+      "currency": "USD",
+      "period": "monthly",
+      "lastPaymentDate": "2026-06-01",
+      "nextPaymentDate": "2026-07-01",
+      "notificationEnabled": true,
+      "createdAt": "2026-01-15T10:00:00.000Z",
+      "updatedAt": "2026-06-01T00:00:00.000Z"
+    }
+  ],
+  "requestId": "f8e7d6c5-b4a3-..."
+}
+```
+
+## Rate limit headers
+
+Every response includes the following headers so you can track your usage.
+
+| Header | Description |
+|---|---|
+| `X-RateLimit-Limit` | Maximum requests allowed in the current window. |
+| `X-RateLimit-Remaining` | Requests remaining before you are rate-limited. |
+| `X-RateLimit-Reset` | Unix timestamp when the current window resets. |

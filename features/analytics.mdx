@@ -1,0 +1,58 @@
+---
+title: "Subscription spending analytics, trends, and reports"
+sidebarTitle: "Analytics"
+description: "Use Sub's analytics to see spending totals, category breakdowns, top subscriptions, a 12-month spending trend, a renewal heatmap, and optimization tips."
+---
+
+Sub's Analytics view turns your subscription list into actionable spending insights. Every figure on the page is converted to your chosen base currency in real time, so you always see a consistent picture of where your money goes — even when your subscriptions are billed in different currencies.
+
+## What the Analytics view includes
+
+<CardGroup cols={2}>
+  <Card title="Spending totals" icon="circle-dollar-to-slot">
+    Monthly and yearly cost totals in your base currency, calculated from all active subscriptions.
+  </Card>
+  <Card title="Category breakdown" icon="chart-pie">
+    A chart showing which categories consume the largest share of your spending. Each slice represents one category.
+  </Card>
+  <Card title="Top subscriptions" icon="ranking-star">
+    A ranked list of your most expensive subscriptions by cost per period, so you can quickly spot where to cut back.
+  </Card>
+  <Card title="Renewal heatmap" icon="calendar-days">
+    A day-of-month breakdown (days 1–31) showing how many subscriptions renew on each day and the total amount due, so you can anticipate cash-flow peaks.
+  </Card>
+  <Card title="Spending trend" icon="chart-line">
+    A month-by-month chart of your total spending over the past 12 months, showing how your subscription costs have changed over time.
+  </Card>
+  <Card title="Optimization suggestions" icon="lightbulb">
+    Personalised tips — such as switching monthly-billed services to annual billing or consolidating multiple subscriptions in the same category — with estimated potential savings.
+  </Card>
+</CardGroup>
+
+## Supported currencies
+
+Sub converts all subscription amounts into your base currency for display. The ten supported currencies are:
+
+**CNY, USD, EUR, JPY, GBP, AUD, CAD, CHF, HKD, SGD**
+
+Every amount in the Analytics view is expressed in whichever currency you set as your base.
+
+## Changing your base currency
+
+Use the **currency selector** at the top of the dashboard to switch your base currency. All totals, charts, and rankings update instantly — no page reload required. Sub re-runs the currency conversion for every subscription the moment you make a selection.
+
+## Live rates and fallback rates
+
+Sub fetches live exchange rates from an external API each time it needs to convert currencies. Rates are cached for up to one hour to avoid unnecessary network requests.
+
+<Accordion title="What happens when the network is unavailable?">
+  If Sub cannot reach the exchange rate API — for example because you are offline — it falls back to a built-in set of cached rates. These rates are approximations and may not reflect the current market. Sub indicates when it is using fallback rates so you know the totals are estimates rather than exact figures. As soon as connectivity is restored, Sub refreshes to live rates automatically.
+</Accordion>
+
+<Tip>
+  Switch to **Yearly** view to see the full annual cost of all your subscriptions added together. This is useful for budgeting and for spotting how much yearly-billed services contribute compared to monthly ones.
+</Tip>
+
+## Exporting your spending report
+
+To save or share a snapshot of your subscription data, export it as a JSON file. See [Import & Export](/features/import-export) for step-by-step instructions.

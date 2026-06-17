@@ -1,0 +1,59 @@
+---
+title: Add your first subscription and get started with Sub
+sidebarTitle: Quickstart
+description: Learn how to add your first subscription, set a base currency, and read your monthly and yearly spending totals in under five minutes.
+---
+
+This guide walks you through adding your first subscription, picking a base currency, and reading your monthly and yearly spending totals. By the end you will have a working Sub dashboard — no account, no installation, and no configuration required. Everything runs in your browser from the moment you open the app.
+
+<Steps>
+  <Step title="Open the app">
+    Navigate to [https://sub.jerrylu.app](https://sub.jerrylu.app) in any modern browser. The app loads instantly and stores all data locally in your browser — you do not need to create an account or sign in to get started.
+  </Step>
+
+  <Step title="Add your first subscription">
+    Click the **Add subscription** button to open the subscription form. Fill in the following fields:
+
+    | Field | What to enter |
+    |---|---|
+    | **Name** | The service name, e.g. `Netflix` |
+    | **Category** | Pick a built-in category or create a custom one |
+    | **Amount** | The billing amount as a number |
+    | **Currency** | The currency you are billed in |
+    | **Billing period** | `Monthly`, `Yearly`, or `Custom` |
+    | **Last payment date** | The date your most recent payment was charged |
+
+    Sub calculates the **Next payment date** for you automatically based on the billing period and last payment date you entered. For a `Custom` period you can also set an explicit next date.
+
+    <Tip>
+      You can edit any field later by clicking the subscription in your list. Sub recalculates the next payment date whenever you save a change.
+    </Tip>
+  </Step>
+
+  <Step title="Set your base currency">
+    Find the **base currency selector** at the top of the dashboard and choose the currency you want totals displayed in — for example `USD` or `CNY`. Sub fetches live exchange rates and converts every subscription amount to your chosen currency automatically. If live rates are temporarily unavailable, Sub falls back to built-in reference rates so your totals always display.
+  </Step>
+
+  <Step title="Switch between Monthly and Yearly view">
+    Use the **Monthly / Yearly** toggle on the dashboard to switch views. The monthly total shows what all your active subscriptions cost per month (yearly subscriptions are divided by 12). The yearly total shows the full annual cost. Both figures reflect the live-converted amounts in your base currency.
+  </Step>
+
+  <Step title="Explore Analytics">
+    Open the **Analytics** section from the main navigation. Here you can see:
+
+    - **Category breakdown** — a chart of spending split by category
+    - **Top subscriptions** — your most expensive recurring charges ranked by cost
+    - **Renewal patterns** — a calendar or timeline view of upcoming renewal dates
+    - **Spending reports** — historical totals over time
+
+    Use Analytics to spot categories where costs have crept up or to plan ahead for months with multiple renewals landing at once.
+  </Step>
+</Steps>
+
+<Note>
+  All the steps above work without an account. If you want your subscriptions to follow you across devices, sign in from the user menu to enable cloud sync. See [Account & Sync](/account-and-sync) for the full walkthrough.
+</Note>
+
+<Tip>
+  If you manage subscriptions programmatically — for example, syncing from a billing tool or a home-automation script — check out the [Developer API](/api/overview). It lets you create, read, update, and delete subscriptions via HTTP using a personal API key. An account is required to use the API.
+</Tip>

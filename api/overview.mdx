@@ -1,0 +1,62 @@
+---
+title: "Sub REST API Overview: Manage Subscriptions via API"
+sidebarTitle: "Overview"
+description: "Sub's REST API lets you create, read, update, and delete subscriptions programmatically. Authenticate with an API key in the Authorization header."
+---
+
+Sub exposes a v1 REST API for automating subscription management. Use it to sync data with other tools, build workflows, or manage subscriptions from scripts. The API follows REST conventions, accepts JSON request bodies, and returns JSON responses. Every request must be authenticated with an API key.
+
+## Base URL
+
+Your base URL depends on how you are running Sub. If you are using the hosted app, use `https://sub.jerrylu.app`. If you have deployed your own instance, replace this with your deployment URL.
+
+```
+https://your-site.example
+```
+
+All API endpoints are served under the following base path:
+
+```
+/api/v1/subscriptions
+```
+
+## Available Endpoints
+
+| Method | Path | Description |
+|---|---|---|
+| `GET` | `/api/v1/subscriptions` | List all your subscriptions |
+| `GET` | `/api/v1/subscriptions/:id` | Get a single subscription |
+| `POST` | `/api/v1/subscriptions` | Create a subscription |
+| `PATCH` | `/api/v1/subscriptions/:id` | Update a subscription |
+| `DELETE` | `/api/v1/subscriptions/:id` | Delete a subscription |
+
+## Authentication
+
+Every request must include your API key as a Bearer token in the `Authorization` header. API keys are prefixed with `subm_` and are tied to your Sub account.
+
+```bash
+Authorization: Bearer subm_YOUR_KEY
+```
+
+You generate and manage API keys from the **Developer API** section of the user menu. See the [Authentication](/api/authentication) page for full details.
+
+<Note>
+  The API requires a Sub account with cloud sync enabled and Netlify Functions running on your deployment. If you are running Sub in local-only mode without cloud sync configured, the API endpoints are not available.
+</Note>
+
+## Explore the API
+
+<CardGroup cols={2}>
+  <Card title="Authentication" icon="key" href="/api/authentication">
+    Learn how to generate API keys and include them in your requests.
+  </Card>
+  <Card title="Rate Limits" icon="gauge" href="/api/rate-limits">
+    Understand per-hour request quotas and how to read rate limit headers.
+  </Card>
+  <Card title="List Subscriptions" icon="list" href="/api/subscriptions/list">
+    Fetch all subscriptions associated with your account.
+  </Card>
+  <Card title="Create a Subscription" icon="plus" href="/api/subscriptions/create">
+    Add a new subscription via the API with a single POST request.
+  </Card>
+</CardGroup>

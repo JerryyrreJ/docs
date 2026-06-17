@@ -1,0 +1,91 @@
+---
+title: "Import and export your Sub subscription backup data"
+sidebarTitle: "Import & Export"
+description: "Back up all your Sub subscriptions as a JSON file, or import a previous backup to restore or migrate your subscription data to another device."
+---
+
+Sub lets you export the full subscription list as JSON and import it back at any time — handy for backups, migration, or sharing between instances. Because Sub is local-first, the export file is the primary way to move your data from one browser or device to another.
+
+## Exporting your data
+
+<Steps>
+  <Step title="Open the menu and choose Export">
+    Click the **menu** icon in the top-right corner of the app and select **Export**.
+  </Step>
+  <Step title="Save the downloaded file">
+    Sub immediately generates and downloads a JSON file named `subscription-manager-backup-<timestamp>.json`. The file contains all your subscriptions and custom categories.
+  </Step>
+  <Step title="Store the file somewhere safe">
+    Move the backup file to a location you trust — cloud storage, an external drive, or a password manager's secure notes — so you can retrieve it when needed.
+  </Step>
+</Steps>
+
+## Importing your data
+
+<Steps>
+  <Step title="Open the menu and choose Import">
+    Click the **menu** icon and select **Import**.
+  </Step>
+  <Step title="Select your JSON file">
+    Choose the backup file from your device using the file picker. Sub accepts any JSON file that was previously exported from Sub.
+  </Step>
+  <Step title="Sub validates and merges the data">
+    Sub checks every record in the file for required fields and valid values before writing anything. Valid subscriptions and categories are merged with your existing data. If validation fails, Sub reports the error and leaves your current data untouched.
+  </Step>
+</Steps>
+
+## JSON file format
+
+The export file is a plain JSON object with a version stamp, an export date, a subscriptions array, and an optional categories array. A minimal subscriptions entry looks like this:
+
+```json
+[
+  {
+    "id": "abc-123",
+    "name": "Netflix",
+    "category": "Streaming",
+    "amount": 15.99,
+    "currency": "USD",
+    "period": "monthly",
+    "lastPaymentDate": "2026-06-01",
+    "nextPaymentDate": "2026-07-01"
+  }
+]
+```
+
+The full export wraps this in an envelope:
+
+```json
+{
+  "version": "1.0.0",
+  "exportDate": "2026-06-15T10:00:00.000Z",
+  "subscriptions": [ ... ],
+  "categories": [ ... ]
+}
+```
+
+Each subscription record supports the following fields:
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `id` | string | Yes | Unique identifier used for deduplication on import |
+| `name` | string | Yes | Service name |
+| `category` | string | Yes | Category name |
+| `amount` | number | Yes | Cost per billing period |
+| `currency` | string | Yes | One of: CNY, USD, EUR, JPY, GBP, AUD, CAD, CHF, HKD, SGD |
+| `period` | string | Yes | One of: `monthly`, `yearly`, `custom` |
+| `lastPaymentDate` | string | Yes | Date of most recent charge (YYYY-MM-DD) |
+| `nextPaymentDate` | string | Yes | Calculated renewal date (YYYY-MM-DD) |
+| `notificationEnabled` | boolean | No | Whether renewal reminders are on (defaults to `true`) |
+
+## How import merges data
+
+Import uses each subscription's `id` field to decide what to do:
+
+- **New ID** — the subscription is created.
+- **Existing ID with different content** — the subscription is updated.
+- **Existing ID with identical content** — the subscription is left unchanged (no duplicate is created).
+
+<Note>
+  Importing a file does **not** delete subscriptions that exist in Sub but are absent from the import file. Your existing data is never removed by an import operation. To do a full replacement, export your data first, delete the subscriptions you no longer want, and then import the trimmed file.
+</Note>

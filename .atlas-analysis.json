@@ -1,0 +1,102 @@
+{
+  "projectType": "saas",
+  "projectName": "Sub – Subscription Manager",
+  "projectDescription": "A local-first web app for tracking and managing recurring subscriptions, with optional cloud sync, renewal reminders, analytics, and a developer API.",
+  "theme": "almond",
+  "primaryColor": "#17bde4",
+  "lightColor": "#d8d1f7",
+  "darkColor": null,
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": [
+              "introduction",
+              "quickstart",
+              "account-and-sync"
+            ]
+          },
+          {
+            "group": "Core Features",
+            "pages": [
+              "features/subscriptions",
+              "features/analytics",
+              "features/categories",
+              "features/import-export"
+            ]
+          },
+          {
+            "group": "Notifications",
+            "pages": [
+              "notifications/overview",
+              "notifications/bark-setup"
+            ]
+          },
+          {
+            "group": "Premium",
+            "pages": [
+              "premium/overview",
+              "premium/upgrade"
+            ]
+          },
+          {
+            "group": "Configuration",
+            "pages": [
+              "configuration/environment-variables",
+              "configuration/supabase",
+              "configuration/self-hosting"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "API Reference",
+        "groups": [
+          {
+            "group": "Overview",
+            "pages": [
+              "api/overview",
+              "api/authentication",
+              "api/rate-limits"
+            ]
+          },
+          {
+            "group": "Subscriptions",
+            "pages": [
+              "api/subscriptions/list",
+              "api/subscriptions/get",
+              "api/subscriptions/create",
+              "api/subscriptions/update",
+              "api/subscriptions/delete"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "keyFeatures": [
+    "Local-first subscription tracking — no account required",
+    "Multi-currency support with live exchange rates (CNY, USD, EUR, JPY, GBP, AUD, CAD, CHF, HKD, SGD)",
+    "Spending analytics with category breakdowns and renewal patterns",
+    "Optional Supabase cloud sync and multi-device access",
+    "Bark push notifications for upcoming renewal reminders",
+    "Import and export subscription data as JSON",
+    "Custom and built-in subscription categories",
+    "Light and dark mode on desktop and mobile",
+    "Developer API for subscription automation",
+    "Premium tier with higher API quotas and more API keys"
+  ],
+  "publicApiSurface": [
+    "GET /api/v1/subscriptions — list all subscriptions for the authenticated API key owner",
+    "GET /api/v1/subscriptions/:id — retrieve a single subscription",
+    "POST /api/v1/subscriptions — create a new subscription",
+    "PATCH /api/v1/subscriptions/:id — update writable subscription fields",
+    "DELETE /api/v1/subscriptions/:id — delete a subscription",
+    "Authorization: Bearer subm_xxx — API key authentication header",
+    "X-RateLimit-Limit / X-RateLimit-Remaining / X-RateLimit-Reset — rate-limit response headers",
+    "Subscription fields: name, category, amount, currency, period, lastPaymentDate, customDate, notificationEnabled"
+  ]
+}

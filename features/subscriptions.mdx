@@ -1,0 +1,93 @@
+---
+title: "Add, edit, and manage your recurring subscriptions"
+sidebarTitle: "Subscriptions"
+description: "Add, edit, sort, and filter all your recurring subscriptions in Sub. Track name, category, amount, currency, billing period, and renewal dates."
+---
+
+Sub's subscription list is your central view of every recurring charge. From here you can add new services, update existing ones, and stay on top of upcoming renewals — all stored locally in your browser without needing an account.
+
+## Adding a subscription
+
+<Steps>
+  <Step title="Click Add subscription">
+    Open the main subscription list and click the **Add subscription** button in the top-right corner.
+  </Step>
+  <Step title="Enter name, category, amount, and currency">
+    Type the service name (for example, Netflix), choose a category, enter the cost per billing period, and select the currency from the supported list.
+  </Step>
+  <Step title="Choose a billing period">
+    Select **monthly**, **yearly**, or **custom**. Choosing custom lets you define a specific date interval so Sub can calculate renewals for non-standard billing cycles.
+  </Step>
+  <Step title="Enter the last payment date">
+    Set the date of the most recent charge. Sub uses this date together with the billing period to automatically calculate the **next renewal date** — you never have to set it manually.
+  </Step>
+  <Step title="Toggle notifications">
+    Enable or disable renewal reminders for this specific subscription using the notification toggle. The setting is per-subscription, so you can silence reminders for subscriptions you don't want to track closely.
+  </Step>
+  <Step title="Save">
+    Click **Save**. The subscription appears immediately in your list, and the next renewal date is calculated and displayed.
+  </Step>
+</Steps>
+
+## Subscription fields
+
+Every subscription record stores the following information:
+
+| Field | Description |
+|---|---|
+| Name | The service name (e.g. Netflix, Spotify) |
+| Category | A group used for analytics — choose from built-in or custom categories |
+| Amount | The cost charged each billing period |
+| Currency | One of the ten supported currencies: CNY, USD, EUR, JPY, GBP, AUD, CAD, CHF, HKD, or SGD |
+| Period | The billing frequency: `monthly`, `yearly`, or `custom` |
+| Last payment date | The date of the most recent charge |
+| Next renewal | Calculated automatically from the last payment date plus the billing period |
+| Custom date | An interval in days used to calculate renewals when the period is set to `custom` |
+| Notification | Per-subscription toggle to enable or disable renewal reminders |
+
+## Editing a subscription
+
+To update any field, click the **edit icon** on the subscription card. Change whichever fields you need and click **Save**. Sub recalculates the next renewal date if you update the last payment date or billing period.
+
+## Deleting a subscription
+
+Click the **delete** option on the subscription card. Sub removes the record immediately from local storage. This action cannot be undone, so export a backup first if you want to keep a copy.
+
+## Sorting
+
+Use the sort control to order your subscriptions by any of these fields:
+
+<CardGroup cols={2}>
+  <Card title="Name" icon="a-z">
+    Alphabetical order by service name.
+  </Card>
+  <Card title="Amount" icon="dollar-sign">
+    Lowest to highest, or highest to lowest cost.
+  </Card>
+  <Card title="Next renewal" icon="calendar">
+    Soonest or furthest upcoming renewal date.
+  </Card>
+  <Card title="Category" icon="tag">
+    Grouped alphabetically by category name.
+  </Card>
+  <Card title="Date added" icon="clock">
+    Most recently added or oldest first.
+  </Card>
+</CardGroup>
+
+Each sort field supports both **ascending** and **descending** order. Click the sort toggle to flip the direction.
+
+## Filtering and searching
+
+- **Filter by category** — select a category from the filter menu to show only subscriptions in that group.
+- **Search by name** — type in the search box to instantly narrow the list to matching service names.
+
+Combine both controls to find exactly the subscription you're looking for.
+
+## Monthly vs. yearly view
+
+Toggle between **Monthly** and **Yearly** view at the top of the dashboard. Sub converts all subscription amounts to your selected base currency and displays the total cost for the chosen period. This gives you a clear picture of your short-term and long-term spending at a glance.
+
+<Tip>
+  Switch to Yearly view before your renewal season to see the full annual cost of all your subscriptions in one number.
+</Tip>

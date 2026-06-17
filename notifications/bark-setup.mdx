@@ -1,0 +1,94 @@
+---
+title: "Set up Bark push notifications for Sub on your iOS device"
+sidebarTitle: "Bark Setup"
+description: "Configure Bark push notifications in Sub to get renewal reminders on your iPhone or iPad before any subscription charge hits your account."
+---
+
+Bark is a free iOS app that receives push notifications from any service you configure. Sub integrates with Bark to deliver renewal reminders even when the app is closed — a server-side scheduled function handles delivery, so your device always gets the alert at the right time regardless of whether you have Sub open.
+
+## Prerequisites
+
+Complete both of the following before configuring Bark in Sub.
+
+<CardGroup cols={2}>
+  <Card title="Install Bark on iOS" icon="mobile">
+    Download [Bark](https://bark.day.app) from the App Store on your iPhone or iPad. Once installed, open the app to reveal your unique device key and server URL.
+  </Card>
+  <Card title="Sign in to Sub" icon="cloud">
+    Sign in to Sub with a cloud account. Notification settings are stored in the cloud, so an active session is required for reminders to work.
+  </Card>
+</CardGroup>
+
+## Configure Global Bark Settings
+
+Follow these steps to enable Bark notifications for your Sub account.
+
+<Steps>
+  <Step title="Open Notification Settings">
+    Launch Sub, open the user menu, and select **Notification Settings**.
+  </Step>
+  <Step title="Enable Bark push notifications">
+    Toggle **Bark push notifications** on. This is the global switch that controls whether Sub can send any Bark reminders at all.
+  </Step>
+  <Step title="Enter your Bark server URL">
+    Type your Bark server URL into the **Server URL** field. Use `https://api.day.app` for the free official server, or enter your own self-hosted URL if you run a private Bark instance.
+  </Step>
+  <Step title="Enter your Bark device key">
+    Open the Bark app on your iOS device — your device key is displayed on the home screen. Copy it and paste it into the **Device Key** field in Sub.
+  </Step>
+  <Step title="Set days before renewal">
+    Enter a number in the **Days before renewal** field. For example, entering `3` tells Sub to notify you 3 days before each upcoming payment date.
+  </Step>
+  <Step title="Save settings">
+    Tap or click **Save**. Sub stores your settings in the cloud so your reminders are ready to fire on schedule.
+  </Step>
+</Steps>
+
+## Enable Notifications Per Subscription
+
+The global Bark toggle arms the system, but each subscription also has its own notification switch. Turn it on for every subscription you want to receive reminders about.
+
+<Steps>
+  <Step title="Open a subscription">
+    From your subscription list, tap or click the subscription you want to configure.
+  </Step>
+  <Step title="Enable the notification toggle">
+    Find the **Notification enabled** toggle and switch it on.
+  </Step>
+  <Step title="Save the subscription">
+    Save your changes. The subscription is now scheduled to trigger a Bark push the configured number of days before its next renewal.
+  </Step>
+</Steps>
+
+<Warning>
+  Both the global Bark toggle **and** the per-subscription toggle must be on for a reminder to fire. Enabling one without the other results in no notification being sent.
+</Warning>
+
+## Official vs. Self-Hosted Bark Server
+
+Choose the Bark server option that best fits your setup.
+
+| Option | URL | Notes |
+|---|---|---|
+| Official server | `https://api.day.app` | Free, maintained by the Bark team, no setup required |
+| Self-hosted | Your own URL | Full control over your data; Docker image available from the Bark project |
+
+<Note>
+  Reminders are delivered by a server-side scheduled function. You do not need Sub open on any device for reminders to fire — set it up once and let the scheduler handle the rest.
+</Note>
+
+<Tip>
+  If you stop receiving reminders, the first thing to check is that both the global Bark toggle in Notification Settings **and** the per-subscription toggle are enabled.
+</Tip>
+
+## Troubleshooting
+
+<Accordion title="Why am I not receiving notifications?">
+  Work through the following checklist to identify the cause.
+
+  - **Global Bark toggle is off** — Open **Notification Settings** and enable Bark push notifications.
+  - **Per-subscription toggle is off** — Edit the subscription and switch the **Notification enabled** toggle on.
+  - **Wrong device key** — Open the Bark app on your iOS device and copy the key directly from the home screen. Paste it into the **Device Key** field in Sub.
+  - **Wrong server URL** — Verify that the URL you entered is reachable. If you self-host Bark, confirm the server is running and accessible from the public internet.
+  - **Account not signed in** — Notifications require a cloud account. Sign in to Sub and confirm your session is active before expecting reminders to fire.
+</Accordion>

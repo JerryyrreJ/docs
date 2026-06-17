@@ -1,0 +1,69 @@
+---
+title: "Delete an Existing Subscription – Sub API Reference"
+sidebarTitle: "Delete"
+description: "DELETE /api/v1/subscriptions/:id — permanently delete a subscription by its UUID. Returns 200 with a confirmation body. This action cannot be undone."
+---
+
+The Delete endpoint permanently removes a subscription from your account. Once deleted, the subscription's history, payment dates, and settings are gone — there is no soft-delete or recovery mechanism. If you need a backup before making bulk deletions, export your data first using the [Import & Export](/features/import-export) feature.
+
+## Endpoint
+
+```
+DELETE /api/v1/subscriptions/:id
+```
+
+## Path parameters
+
+<ParamField path="id" type="string" required>
+  UUID of the subscription to delete. Must be a valid UUID v4, for example `a1b2c3d4-e5f6-7890-abcd-ef1234567890`.
+</ParamField>
+
+## Request example
+
+```bash
+curl -X DELETE \
+  -H "Authorization: Bearer subm_YOUR_KEY" \
+  https://sub.jerrylu.app/api/v1/subscriptions/a1b2c3d4-...
+```
+
+## Response
+
+Returns `200 OK` with a confirmation envelope on success.
+
+<ResponseField name="deleted" type="boolean" required>
+  Always `true` when the deletion succeeds.
+</ResponseField>
+
+<ResponseField name="requestId" type="string" required>
+  Unique identifier for this API request. Include this value when contacting support.
+</ResponseField>
+
+### Example response
+
+```json
+{
+  "deleted": true,
+  "requestId": "f8e7d6c5-b4a3-..."
+}
+```
+
+## Errors
+
+| HTTP status | Error code | Description |
+|---|---|---|
+| `400` | `invalid_subscription_id` | The `:id` path segment is not a valid UUID. |
+| `404` | `subscription_not_found` | No subscription with that ID exists for your account. |
+
+<Warning>
+  Deletion is permanent and cannot be undone. Export your subscriptions via [Import & Export](/features/import-export) before performing bulk deletions if you want to keep a backup.
+</Warning>
+
+## Rate limit headers
+
+Every response includes the following headers so you can track your usage.
+
+| Header | Description |
+|---|---|
+| `X-RateLimit-Limit` | Maximum requests allowed in the current window. |
+| `X-RateLimit-Remaining` | Requests remaining before you are rate-limited. |
+| `X-RateLimit-Reset` | Unix timestamp when the current window resets. |
